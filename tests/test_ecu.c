@@ -37,6 +37,38 @@ static void test_short_rpm_frame_is_rejected(void)
     assert(ecu.rpm == 4200U);
 }
 
+static void test_known_throttle_frame_updates_state(void)
+{
+    EcuState ecu = {0};
+    const uint8_t payload[] = {0x02, 0xEE};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_THROTTLE,
+        .data = payload,
+        .length = sizeof payload
+    };
+
+    bool ok = ecu_process_frame(&ecu, &frame);
+
+    assert(ok);
+    assert(ecu.throttle_permille == 750U);
+}
+
+static void test_out_of_range_throttle_is_rejected(void)
+{
+    EcuState ecu = {.throttle_permille = 500U};
+    const uint8_t payload[] = {0x03, 0xE9};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_THROTTLE,
+        .data = payload,
+        .length = sizeof payload
+    };
+
+    bool ok = ecu_process_frame(&ecu, &frame);
+
+    assert(!ok);
+    assert(ecu.throttle_permille == 500U);
+}
+
 static void test_unknown_frame_is_rejected(void)
 {
     EcuState ecu = {.rpm = 4200U};
@@ -77,6 +109,8 @@ int main(void)
 {
     test_known_rpm_frame_updates_state();
     test_short_rpm_frame_is_rejected();
+    test_known_throttle_frame_updates_state();
+    test_out_of_range_throttle_is_rejected();
     test_unknown_frame_is_rejected();
     test_null_inputs_are_rejected();
 
