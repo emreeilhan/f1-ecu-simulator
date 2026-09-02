@@ -88,6 +88,8 @@ bool ecu_update_coolant_temp(EcuState *ecu,
 
 bool ecu_process_frame(EcuState *ecu, const EcuFrame *frame)
 {
+    bool ok;
+
     if (ecu == NULL || frame == NULL)
     {
         return false;
@@ -96,15 +98,47 @@ bool ecu_process_frame(EcuState *ecu, const EcuFrame *frame)
     switch (frame->id)
     {
         case ECU_FRAME_ID_RPM:
-            return ecu_update_rpm(ecu, frame->data, frame->length);
+            ok = ecu_update_rpm(ecu, frame->data, frame->length);
+
+            if (!ok)
+            {
+                ecu->fault_flags |= ECU_FAULT_RPM_FRAME_INVALID;
+            }
+
+            return ok;
 
         case ECU_FRAME_ID_THROTTLE:
-            return ecu_update_throttle(ecu, frame->data, frame->length);
+            ok = ecu_update_throttle(ecu, frame->data, frame->length);
+
+            if (!ok)
+            {
+                ecu->fault_flags |= ECU_FAULT_THROTTLE_FRAME_INVALID;
+            }
+
+            return ok;
 
         case ECU_FRAME_ID_COOLANT_TEMP:
-            return ecu_update_coolant_temp(ecu, frame->data, frame->length);
+            ok = ecu_update_coolant_temp(ecu,
+                                         frame->data,
+                                         frame->length);
+
+            if (!ok)
+            {
+                ecu->fault_flags |= ECU_FAULT_COOLANT_TEMP_FRAME_INVALID;
+            }
+
+            return ok;
 
         default:
+            ecu->fault_flags |= ECU_FAULT_UNKNOWN_FRAME_ID;
             return false;
+    }
+}
+
+void ecu_clear_faults(EcuState *ecu)
+{
+    if (ecu != NULL)
+    {
+        ecu->fault_flags = ECU_FAULT_NONE;
     }
 }
