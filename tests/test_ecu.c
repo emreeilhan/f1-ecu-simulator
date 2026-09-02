@@ -5,23 +5,49 @@
 
 #include "ecu.h"
 
-static void test_valid_rpm_frame(void)
+static void test_known_rpm_frame_updates_state(void)
 {
     EcuState ecu = {0};
-    const uint8_t frame[] = {0x0B, 0xB8};
+    const uint8_t payload[] = {0x0B, 0xB8};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_RPM,
+        .data = payload,
+        .length = sizeof payload
+    };
 
-    bool ok = ecu_update_rpm(&ecu, frame, sizeof frame);
+    bool ok = ecu_process_frame(&ecu, &frame);
 
     assert(ok);
     assert(ecu.rpm == 3000U);
 }
 
-static void test_short_frame_is_rejected(void)
+static void test_short_rpm_frame_is_rejected(void)
 {
     EcuState ecu = {.rpm = 4200U};
-    const uint8_t frame[] = {0x0B};
+    const uint8_t payload[] = {0x0B};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_RPM,
+        .data = payload,
+        .length = sizeof payload
+    };
 
-    bool ok = ecu_update_rpm(&ecu, frame, sizeof frame);
+    bool ok = ecu_process_frame(&ecu, &frame);
+
+    assert(!ok);
+    assert(ecu.rpm == 4200U);
+}
+
+static void test_unknown_frame_is_rejected(void)
+{
+    EcuState ecu = {.rpm = 4200U};
+    const uint8_t payload[] = {0x0B, 0xB8};
+    const EcuFrame frame = {
+        .id = 0x07FFU,
+        .data = payload,
+        .length = sizeof payload
+    };
+
+    bool ok = ecu_process_frame(&ecu, &frame);
 
     assert(!ok);
     assert(ecu.rpm == 4200U);
@@ -30,16 +56,28 @@ static void test_short_frame_is_rejected(void)
 static void test_null_inputs_are_rejected(void)
 {
     EcuState ecu = {0};
-    const uint8_t frame[] = {0x0B, 0xB8};
+    const uint8_t payload[] = {0x0B, 0xB8};
+    const EcuFrame valid_frame = {
+        .id = ECU_FRAME_ID_RPM,
+        .data = payload,
+        .length = sizeof payload
+    };
+    const EcuFrame null_payload_frame = {
+        .id = ECU_FRAME_ID_RPM,
+        .data = NULL,
+        .length = 2U
+    };
 
-    assert(!ecu_update_rpm(NULL, frame, sizeof frame));
-    assert(!ecu_update_rpm(&ecu, NULL, 2U));
+    assert(!ecu_process_frame(NULL, &valid_frame));
+    assert(!ecu_process_frame(&ecu, NULL));
+    assert(!ecu_process_frame(&ecu, &null_payload_frame));
 }
 
 int main(void)
 {
-    test_valid_rpm_frame();
-    test_short_frame_is_rejected();
+    test_known_rpm_frame_updates_state();
+    test_short_rpm_frame_is_rejected();
+    test_unknown_frame_is_rejected();
     test_null_inputs_are_rejected();
 
     puts("All tests passed.");
