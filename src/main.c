@@ -3,6 +3,23 @@
 
 #include "ecu.h"
 
+static void print_temperature_deci_c(int16_t temperature_deci_c)
+{
+    int32_t magnitude = temperature_deci_c;
+    const char *sign = "";
+
+    if (magnitude < 0)
+    {
+        sign = "-";
+        magnitude = -magnitude;
+    }
+
+    printf("Coolant: %s%ld.%ld C\n",
+           sign,
+           (long)(magnitude / 10),
+           (long)(magnitude % 10));
+}
+
 int main(void)
 {
     EcuState ecu = {0};
@@ -21,6 +38,13 @@ int main(void)
         .length = sizeof throttle_payload
     };
 
+    const uint8_t coolant_payload[] = {0x03, 0x89};
+    const EcuFrame coolant_frame = {
+        .id = ECU_FRAME_ID_COOLANT_TEMP,
+        .data = coolant_payload,
+        .length = sizeof coolant_payload
+    };
+
     if (!ecu_process_frame(&ecu, &rpm_frame))
     {
         fprintf(stderr, "RPM frame could not be processed\n");
@@ -33,10 +57,17 @@ int main(void)
         return 1;
     }
 
+    if (!ecu_process_frame(&ecu, &coolant_frame))
+    {
+        fprintf(stderr, "Coolant frame could not be processed\n");
+        return 1;
+    }
+
     printf("RPM: %u\n", (unsigned int)ecu.rpm);
     printf("Throttle: %u.%u%%\n",
            (unsigned int)(ecu.throttle_permille / 10U),
            (unsigned int)(ecu.throttle_permille % 10U));
+    print_temperature_deci_c(ecu.coolant_temp_deci_c);
 
     return 0;
 }

@@ -2,8 +2,28 @@
 
 enum
 {
-    THROTTLE_MAX_PERMILLE = 1000U
+    THROTTLE_MAX_PERMILLE = 1000U,
+    COOLANT_TEMP_MIN_DECI_C = -400,
+    COOLANT_TEMP_MAX_DECI_C = 1500
 };
+
+static uint16_t decode_be_u16(const uint8_t *data)
+{
+    return (uint16_t)(((uint16_t)data[0] << 8U) |
+                      (uint16_t)data[1]);
+}
+
+static int16_t decode_be_i16(const uint8_t *data)
+{
+    uint16_t raw = decode_be_u16(data);
+
+    if (raw <= INT16_MAX)
+    {
+        return (int16_t)raw;
+    }
+
+    return (int16_t)((int32_t)raw - 65536);
+}
 
 bool ecu_update_rpm(EcuState *ecu,
                     const uint8_t *frame,
@@ -14,8 +34,7 @@ bool ecu_update_rpm(EcuState *ecu,
         return false;
     }
 
-    ecu->rpm = (uint16_t)(((uint16_t)frame[0] << 8U) |
-                          (uint16_t)frame[1]);
+    ecu->rpm = decode_be_u16(frame);
 
     return true;
 }
@@ -31,8 +50,7 @@ bool ecu_update_throttle(EcuState *ecu,
         return false;
     }
 
-    throttle_permille = (uint16_t)(((uint16_t)frame[0] << 8U) |
-                                   (uint16_t)frame[1]);
+    throttle_permille = decode_be_u16(frame);
 
     if (throttle_permille > THROTTLE_MAX_PERMILLE)
     {
@@ -40,6 +58,30 @@ bool ecu_update_throttle(EcuState *ecu,
     }
 
     ecu->throttle_permille = throttle_permille;
+
+    return true;
+}
+
+bool ecu_update_coolant_temp(EcuState *ecu,
+                             const uint8_t *frame,
+                             size_t length)
+{
+    int16_t coolant_temp_deci_c;
+
+    if (ecu == NULL || frame == NULL || length < 2U)
+    {
+        return false;
+    }
+
+    coolant_temp_deci_c = decode_be_i16(frame);
+
+    if (coolant_temp_deci_c < COOLANT_TEMP_MIN_DECI_C ||
+        coolant_temp_deci_c > COOLANT_TEMP_MAX_DECI_C)
+    {
+        return false;
+    }
+
+    ecu->coolant_temp_deci_c = coolant_temp_deci_c;
 
     return true;
 }
@@ -58,6 +100,9 @@ bool ecu_process_frame(EcuState *ecu, const EcuFrame *frame)
 
         case ECU_FRAME_ID_THROTTLE:
             return ecu_update_throttle(ecu, frame->data, frame->length);
+
+        case ECU_FRAME_ID_COOLANT_TEMP:
+            return ecu_update_coolant_temp(ecu, frame->data, frame->length);
 
         default:
             return false;

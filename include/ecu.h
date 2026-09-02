@@ -9,6 +9,7 @@ typedef struct
 {
     uint16_t rpm;
     uint16_t throttle_permille;
+    int16_t coolant_temp_deci_c;
 } EcuState;
 
 typedef struct
@@ -21,7 +22,8 @@ typedef struct
 enum
 {
     ECU_FRAME_ID_RPM = 0x0100U,
-    ECU_FRAME_ID_THROTTLE = 0x0101U
+    ECU_FRAME_ID_THROTTLE = 0x0101U,
+    ECU_FRAME_ID_COOLANT_TEMP = 0x0102U
 };
 
 bool ecu_update_rpm(EcuState *ecu,
@@ -29,8 +31,12 @@ bool ecu_update_rpm(EcuState *ecu,
                     size_t length);
 
 bool ecu_update_throttle(EcuState *ecu,
-                    const uint8_t *frame,
-                    size_t length);
+                         const uint8_t *frame,
+                         size_t length);
+
+bool ecu_update_coolant_temp(EcuState *ecu,
+                             const uint8_t *frame,
+                             size_t length);
 
 bool ecu_process_frame(EcuState *ecu, const EcuFrame *frame);
 

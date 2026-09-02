@@ -105,6 +105,54 @@ static void test_null_inputs_are_rejected(void)
     assert(!ecu_process_frame(&ecu, &null_payload_frame));
 }
 
+static void test_positive_coolant_temp_frame_updates_state(void)
+{
+    EcuState ecu = {0};
+    const uint8_t payload[] = {0x03, 0x89};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_COOLANT_TEMP,
+        .data = payload,
+        .length = sizeof payload
+    };
+
+    bool ok = ecu_process_frame(&ecu, &frame);
+
+    assert(ok);
+    assert(ecu.coolant_temp_deci_c == 905);
+}
+
+static void test_negative_coolant_temp_frame_updates_state(void)
+{
+    EcuState ecu = {0};
+    const uint8_t payload[] = {0xFF, 0x38};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_COOLANT_TEMP,
+        .data = payload,
+        .length = sizeof payload
+    };
+
+    bool ok = ecu_process_frame(&ecu, &frame);
+
+    assert(ok);
+    assert(ecu.coolant_temp_deci_c == -200);
+}
+
+static void test_out_of_range_coolant_temp_is_rejected(void)
+{
+    EcuState ecu = {.coolant_temp_deci_c = 905};
+    const uint8_t payload[] = {0x05, 0xDD};
+    const EcuFrame frame = {
+        .id = ECU_FRAME_ID_COOLANT_TEMP,
+        .data = payload,
+        .length = sizeof payload
+    };
+
+    bool ok = ecu_process_frame(&ecu, &frame);
+
+    assert(!ok);
+    assert(ecu.coolant_temp_deci_c == 905);
+}
+
 int main(void)
 {
     test_known_rpm_frame_updates_state();
@@ -113,7 +161,9 @@ int main(void)
     test_out_of_range_throttle_is_rejected();
     test_unknown_frame_is_rejected();
     test_null_inputs_are_rejected();
-
+    test_positive_coolant_temp_frame_updates_state();
+    test_negative_coolant_temp_frame_updates_state();
+    test_out_of_range_coolant_temp_is_rejected();
     puts("All tests passed.");
     return 0;
 }
