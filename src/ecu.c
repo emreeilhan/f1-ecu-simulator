@@ -142,3 +142,34 @@ void ecu_clear_faults(EcuState *ecu)
         ecu->fault_flags = ECU_FAULT_NONE;
     }
 }
+EcuCommand ecu_compute_command(const EcuState *ecu)
+{
+    EcuCommand command = {0};
+
+    if (ecu == NULL)
+    {
+        return command;
+    }
+
+    if (ecu->fault_flags != ECU_FAULT_NONE)
+    {
+        return command;
+    }
+
+    if (ecu->rpm >= ECU_RPM_LIMIT)
+    {
+        return command;
+    }
+
+    command.throttle_command_permille = ecu->throttle_permille;
+
+    if (ecu->coolant_temp_deci_c >= ECU_COOLANT_DERATE_START_DECI_C &&
+        command.throttle_command_permille >
+            ECU_DERATED_THROTTLE_MAX_PERMILLE)
+    {
+        command.throttle_command_permille =
+            ECU_DERATED_THROTTLE_MAX_PERMILLE;
+    }
+
+    return command;
+}

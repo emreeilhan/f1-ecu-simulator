@@ -199,6 +199,67 @@ static void test_faults_can_be_cleared(void)
 
     assert(ecu.fault_flags == ECU_FAULT_NONE);
 }
+static void test_nominal_command_matches_throttle_request(void)
+{
+    EcuState ecu = {
+        .rpm = 12000U,
+        .throttle_permille = 750U,
+        .coolant_temp_deci_c = 900
+    };
+
+    EcuCommand command = ecu_compute_command(&ecu);
+
+    assert(command.throttle_command_permille == 750U);
+}
+
+static void test_rpm_limiter_closes_throttle(void)
+{
+    EcuState ecu = {
+        .rpm = ECU_RPM_LIMIT,
+        .throttle_permille = 750U,
+        .coolant_temp_deci_c = 900
+    };
+
+    EcuCommand command = ecu_compute_command(&ecu);
+
+    assert(command.throttle_command_permille == 0U);
+}
+
+static void test_hot_coolant_derates_throttle(void)
+{
+    EcuState ecu = {
+        .rpm = 12000U,
+        .throttle_permille = 800U,
+        .coolant_temp_deci_c = ECU_COOLANT_DERATE_START_DECI_C
+    };
+
+    EcuCommand command = ecu_compute_command(&ecu);
+
+    assert(command.throttle_command_permille ==
+           ECU_DERATED_THROTTLE_MAX_PERMILLE);
+}
+
+static void test_fault_forces_safe_throttle_command(void)
+{
+    EcuState ecu = {
+        .rpm = 12000U,
+        .throttle_permille = 750U,
+        .coolant_temp_deci_c = 900,
+        .fault_flags = ECU_FAULT_THROTTLE_FRAME_INVALID
+    };
+
+    EcuCommand command = ecu_compute_command(&ecu);
+
+    assert(command.throttle_command_permille == 0U);
+}
+
+static void test_null_state_returns_safe_command(void)
+{
+    EcuCommand command = ecu_compute_command(NULL);
+
+    assert(command.throttle_command_permille == 0U);
+}
+
 int main(void)
 {
     test_known_rpm_frame_updates_state();
@@ -212,7 +273,11 @@ int main(void)
     test_null_inputs_are_rejected();
     test_multiple_faults_are_preserved();
     test_faults_can_be_cleared();
-
+    test_nominal_command_matches_throttle_request();
+    test_rpm_limiter_closes_throttle();
+    test_hot_coolant_derates_throttle();
+    test_fault_forces_safe_throttle_command();
+    test_null_state_returns_safe_command();
     puts("All tests passed.");
     return 0;
 }

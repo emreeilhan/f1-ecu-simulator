@@ -15,6 +15,11 @@ typedef struct
 
 typedef struct
 {
+    uint16_t throttle_command_permille;
+} EcuCommand;
+
+typedef struct
+{
     uint16_t id;
     const uint8_t *data;
     size_t length;
@@ -36,6 +41,13 @@ enum
     ECU_FAULT_UNKNOWN_FRAME_ID = 1U << 3
 };
 
+enum
+{
+    ECU_RPM_LIMIT = 15000U,
+    ECU_COOLANT_DERATE_START_DECI_C = 1100,
+    ECU_DERATED_THROTTLE_MAX_PERMILLE = 500U
+};
+
 bool ecu_update_rpm(EcuState *ecu,
                     const uint8_t *frame,
                     size_t length);
@@ -51,5 +63,7 @@ bool ecu_update_coolant_temp(EcuState *ecu,
 bool ecu_process_frame(EcuState *ecu, const EcuFrame *frame);
 
 void ecu_clear_faults(EcuState *ecu);
+
+EcuCommand ecu_compute_command(const EcuState *ecu);
 
 #endif

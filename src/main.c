@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "ecu.h"
 
@@ -63,10 +63,18 @@ int main(void)
         return 1;
     }
 
+    EcuCommand command = ecu_compute_command(&ecu);
+
     printf("RPM: %u\n", (unsigned int)ecu.rpm);
-    printf("Throttle: %u.%u%%\n",
+
+    printf("Throttle request: %u.%u%%\n",
            (unsigned int)(ecu.throttle_permille / 10U),
            (unsigned int)(ecu.throttle_permille % 10U));
+
+    printf("Throttle command: %u.%u%%\n",
+           (unsigned int)(command.throttle_command_permille / 10U),
+           (unsigned int)(command.throttle_command_permille % 10U));
+
     print_temperature_deci_c(ecu.coolant_temp_deci_c);
 
     return 0;
