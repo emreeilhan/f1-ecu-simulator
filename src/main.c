@@ -20,6 +20,27 @@ static void print_temperature_deci_c(int16_t temperature_deci_c)
            (long)(magnitude % 10));
 }
 
+static void print_control_scenario(const char *name, const EcuState *ecu)
+{
+    EcuCommand command = ecu_compute_command(ecu);
+
+    printf("\nScenario: %s\n", name);
+    printf("RPM: %u\n", (unsigned int)ecu->rpm);
+
+    printf("Throttle request: %u.%u%%\n",
+           (unsigned int)(ecu->throttle_permille / 10U),
+           (unsigned int)(ecu->throttle_permille % 10U));
+
+    print_temperature_deci_c(ecu->coolant_temp_deci_c);
+
+    printf("Fault flags: 0x%08X\n",
+           (unsigned int)ecu->fault_flags);
+
+    printf("Throttle command: %u.%u%%\n",
+           (unsigned int)(command.throttle_command_permille / 10U),
+           (unsigned int)(command.throttle_command_permille % 10U));
+}
+
 int main(void)
 {
     EcuState ecu = {0};
@@ -63,19 +84,23 @@ int main(void)
         return 1;
     }
 
-    EcuCommand command = ecu_compute_command(&ecu);
+    EcuState normal_ecu = ecu;
 
-    printf("RPM: %u\n", (unsigned int)ecu.rpm);
+    EcuState rpm_limiter_ecu = ecu;
+    rpm_limiter_ecu.rpm = ECU_RPM_LIMIT;
 
-    printf("Throttle request: %u.%u%%\n",
-           (unsigned int)(ecu.throttle_permille / 10U),
-           (unsigned int)(ecu.throttle_permille % 10U));
+    EcuState hot_coolant_ecu = ecu;
+    hot_coolant_ecu.throttle_permille = 800U;
+    hot_coolant_ecu.coolant_temp_deci_c =
+        ECU_COOLANT_DERATE_START_DECI_C;
 
-    printf("Throttle command: %u.%u%%\n",
-           (unsigned int)(command.throttle_command_permille / 10U),
-           (unsigned int)(command.throttle_command_permille % 10U));
+    EcuState faulty_ecu = ecu;
+    faulty_ecu.fault_flags |= ECU_FAULT_THROTTLE_FRAME_INVALID;
 
-    print_temperature_deci_c(ecu.coolant_temp_deci_c);
+    print_control_scenario("Normal operation", &normal_ecu);
+    print_control_scenario("RPM limiter active", &rpm_limiter_ecu);
+    print_control_scenario("Coolant derating active", &hot_coolant_ecu);
+    print_control_scenario("Throttle frame fault", &faulty_ecu);
 
     return 0;
 }
