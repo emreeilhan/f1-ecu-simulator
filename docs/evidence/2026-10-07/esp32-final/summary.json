@@ -1,0 +1,41 @@
+{
+  "completed_at_utc": "2026-10-07T17:38:57.675023+00:00",
+  "checks_passed": [
+    "nominal three-sensor command",
+    "communication loss: all stale at age >=500ms",
+    "nominal three-sensor command",
+    "CRC rejection preserves value/counter/receive time",
+    "valid frame recovers active fault, retains history",
+    "duplicate rejection preserves measurement",
+    "forward counter gap accepted as diagnostic",
+    "valid-CRC range failure and recovery",
+    "bounded line overflow discards through LF and recovers",
+    "actual sequential 255-to-0 counter wrap",
+    "nominal three-sensor command",
+    "no telemetry drops during this exercise"
+  ],
+  "success": true,
+  "baud": 115200,
+  "limits": [
+    "Observed UART exercise, not timing/safety certification",
+    "Device receive time is complete-line observation, not physical FIFO arrival"
+  ],
+  "local_firmware_image_sha256": "548ff67f3785d3e6d3af7d69d0545145aadfc9d1b527a4dcaa64ab52faf48e32",
+  "board": "ESP32-D0WD-V3 revision3.1,4MBflash",
+  "sdk": "ESP-IDF v6.1",
+  "printed_pass_checks": 12,
+  "distinct_check_labels": 10,
+  "trace_records": 352,
+  "max_tx_dropped": 0,
+  "trace_sha256": "3d520eca09b94ceaaca1f8809506aae38bde9ca5e0527507f764452a7afaf44a",
+  "source_sha256": {
+    "include/ecu_core.h": "4e524ff18ff7e866fd7df7e9d407d4dda81ccf3810681d2d6dec3476830fdc37",
+    "include/ecu_transport.h": "8e60f0287b3c78f81dea8a6e13240f59a9b4bdc7f0ad19d5c97ffc1fcacf8e67",
+    "esp32/main/uart_main.c": "748d0e977633e7ff5f82c86f75318e002413a3ab88dea935a0c9dc8b4eb6fd41",
+    "src/ecu_core.c": "a65e49759f5bfd6fafaf1a3b2cab955cb358009d7d3ddc9083e00fe2b2ffc2f0",
+    "src/ecu_protocol.c": "6b73e8171297dbf6d282cc1a060922f095ccc85e1b113892e2b8451380f52542",
+    "src/ecu_policy.c": "12c6abe30beb2ce6d4193449011d190545b7bbaee477d8d37715bcd5b35a7847",
+    "src/ecu_time.c": "c7b32ebb9c72653ad1ed4870b4637451e1142d185f4f3c35e07addcf1220809f",
+    "src/ecu_transport.c": "b36011334807655228df498903b4eb1cc1885c7401416d9b0f9a7bb2b863a361"
+  }
+}

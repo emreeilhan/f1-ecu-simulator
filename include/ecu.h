@@ -5,6 +5,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+/* Legacy-v0 learning API. It has no presence/freshness metadata.
+ * New applications use ecu_core.h; the original 16 tests remain regression
+ * checks for two-byte decoding and explicit sticky-fault behavior. */
 typedef struct
 {
     uint16_t rpm;

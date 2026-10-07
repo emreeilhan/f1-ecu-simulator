@@ -1,0 +1,68 @@
+{
+  "measured_at_utc": "2026-10-07T17:38:01.977220+00:00",
+  "base_revision": "c5e52500c4fe4ad0448e64ebe734894f49aad732",
+  "working_tree_dirty": true,
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "llvm_cov": "Apple LLVM version 21.0.0\n  Optimized build.",
+  "instrumentation_flags": [
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wpedantic",
+    "-Iinclude",
+    "-O0",
+    "-g",
+    "-fprofile-instr-generate",
+    "-fcoverage-mapping"
+  ],
+  "source_scope": [
+    "src/ecu_core.c",
+    "src/ecu_protocol.c",
+    "src/ecu_time.c",
+    "src/ecu_policy.c"
+  ],
+  "source_sha256": {
+    "src/ecu_core.c": "a65e49759f5bfd6fafaf1a3b2cab955cb358009d7d3ddc9083e00fe2b2ffc2f0",
+    "src/ecu_protocol.c": "6b73e8171297dbf6d282cc1a060922f095ccc85e1b113892e2b8451380f52542",
+    "src/ecu_time.c": "c7b32ebb9c72653ad1ed4870b4637451e1142d185f4f3c35e07addcf1220809f",
+    "src/ecu_policy.c": "12c6abe30beb2ce6d4193449011d190545b7bbaee477d8d37715bcd5b35a7847"
+  },
+  "test_runner": "tests/test_core.c",
+  "named_test_functions_invoked": 20,
+  "metrics": {
+    "lines": {
+      "covered": 239,
+      "total": 240,
+      "percent": 99.58
+    },
+    "branches": {
+      "covered": 191,
+      "total": 196,
+      "percent": 97.45
+    },
+    "functions": {
+      "covered": 21,
+      "total": 21,
+      "percent": 100.0
+    },
+    "regions": {
+      "covered": 297,
+      "total": 300,
+      "percent": 99.0
+    }
+  },
+  "exclusions": [
+    "legacy src/ecu.c",
+    "demo/scenario runners",
+    "test code",
+    "UART transport parser",
+    "ESP32 adapter"
+  ],
+  "limits": [
+    "Source execution coverage, not requirements or hardware coverage",
+    "No bug-freedom, safety certification or real-time guarantee",
+    "Counters from existing deterministic core tests; no fuzz campaign"
+  ]
+}

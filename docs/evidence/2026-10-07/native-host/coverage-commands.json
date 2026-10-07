@@ -1,0 +1,114 @@
+[
+  {
+    "command": [
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wpedantic",
+      "-Iinclude",
+      "-O0",
+      "-g",
+      "-fprofile-instr-generate",
+      "-fcoverage-mapping",
+      "tests/test_core.c",
+      "src/ecu_core.c",
+      "src/ecu_protocol.c",
+      "src/ecu_time.c",
+      "src/ecu_policy.c",
+      "-o",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/test_core"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/test_core"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: test_initial_missing_and_throttle_only\nPASS: test_age_499_500_501_and_refresh\nPASS: test_independent_timeout_config\nPASS: test_one_channel_stale\nPASS: test_invalid_config_disables_and_init_alias\nPASS: test_crc_reference_and_protocol_encoder_atomicity\nPASS: test_protocol_length_null_and_decode_output_preservation\nPASS: test_all_payload_single_bit_corruptions_preserve_measurement\nPASS: test_id_is_covered_by_crc\nPASS: test_range_boundaries_and_signed_temperature\nPASS: test_duplicate_old_and_half_range_counters\nPASS: test_counter_wrap_gap_independence_and_rejected_baseline\nPASS: test_received_timestamp_and_queue_age\nPASS: test_clock_rollback_is_latched_and_sensor_atomic\nPASS: test_uint64_boundaries_do_not_wrap\nPASS: test_active_recovery_history_clear_and_resync\nPASS: test_unknown_diagnostic_and_transport_dont_open_or_block_command\nPASS: test_null_api_uninitialized_and_latched_programming_error\nPASS: test_policy_thresholds_multiple_reasons_and_range\nPASS: test_saturating_statistics_and_result_names\nCore: 20 named test functions passed.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-profdata",
+      "merge",
+      "-sparse",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/core.profraw",
+      "-o",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/core.profdata"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-cov",
+      "export",
+      "--summary-only",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/test_core",
+      "--instr-profile=/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/core.profdata",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_core.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_protocol.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_time.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_policy.c"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"data\":[{\"files\":[{\"filename\":\"/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_core.c\",\"summary\":{\"branches\":{\"count\":76,\"covered\":75,\"notcovered\":1,\"percent\":98.68421052631578},\"functions\":{\"count\":10,\"covered\":10,\"percent\":100},\"instantiations\":{\"count\":10,\"covered\":10,\"percent\":100},\"lines\":{\"count\":129,\"covered\":129,\"percent\":100},\"mcdc\":{\"count\":0,\"covered\":0,\"notcovered\":0,\"percent\":0},\"regions\":{\"count\":139,\"covered\":139,\"notcovered\":0,\"percent\":100}}},{\"filename\":\"/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_policy.c\",\"summary\":{\"branches\":{\"count\":36,\"covered\":36,\"notcovered\":0,\"percent\":100},\"functions\":{\"count\":1,\"covered\":1,\"percent\":100},\"instantiations\":{\"count\":1,\"covered\":1,\"percent\":100},\"lines\":{\"count\":27,\"covered\":27,\"percent\":100},\"mcdc\":{\"count\":0,\"covered\":0,\"notcovered\":0,\"percent\":0},\"regions\":{\"count\":42,\"covered\":42,\"notcovered\":0,\"percent\":100}}},{\"filename\":\"/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_protocol.c\",\"summary\":{\"branches\":{\"count\":74,\"covered\":70,\"notcovered\":4,\"percent\":94.594594594594597},\"functions\":{\"count\":8,\"covered\":8,\"percent\":100},\"instantiations\":{\"count\":8,\"covered\":8,\"percent\":100},\"lines\":{\"count\":78,\"covered\":77,\"percent\":98.71794871794873},\"mcdc\":{\"count\":0,\"covered\":0,\"notcovered\":0,\"percent\":0},\"regions\":{\"count\":111,\"covered\":108,\"notcovered\":3,\"percent\":97.297297297297305}}},{\"filename\":\"/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_time.c\",\"summary\":{\"branches\":{\"count\":10,\"covered\":10,\"notcovered\":0,\"percent\":100},\"functions\":{\"count\":2,\"covered\":2,\"percent\":100},\"instantiations\":{\"count\":2,\"covered\":2,\"percent\":100},\"lines\":{\"count\":6,\"covered\":6,\"percent\":100},\"mcdc\":{\"count\":0,\"covered\":0,\"notcovered\":0,\"percent\":0},\"regions\":{\"count\":8,\"covered\":8,\"notcovered\":0,\"percent\":100}}}],\"totals\":{\"branches\":{\"count\":196,\"covered\":191,\"notcovered\":5,\"percent\":97.448979591836732},\"functions\":{\"count\":21,\"covered\":21,\"percent\":100},\"instantiations\":{\"count\":21,\"covered\":21,\"percent\":100},\"lines\":{\"count\":240,\"covered\":239,\"percent\":99.583333333333329},\"mcdc\":{\"count\":0,\"covered\":0,\"notcovered\":0,\"percent\":0},\"regions\":{\"count\":300,\"covered\":297,\"notcovered\":3,\"percent\":99}}}],\"type\":\"llvm.coverage.json.export\",\"version\":\"3.0.1\"}",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "clang",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-cov",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "Apple LLVM version 21.0.0\n  Optimized build.\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-cov",
+      "report",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/test_core",
+      "--instr-profile=/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/core.profdata",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_core.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_protocol.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_time.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_policy.c"
+    ],
+    "exit_code": 0,
+    "stdout": "Filename                      Regions    Missed Regions     Cover   Functions  Missed Functions  Executed       Lines      Missed Lines     Cover    Branches   Missed Branches     Cover\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\necu_core.c                        139                 0   100.00%          10                 0   100.00%         129                 0   100.00%          76                 1    98.68%\necu_protocol.c                    111                 3    97.30%           8                 0   100.00%          78                 1    98.72%          74                 4    94.59%\necu_time.c                          8                 0   100.00%           2                 0   100.00%           6                 0   100.00%          10                 0   100.00%\necu_policy.c                       42                 0   100.00%           1                 0   100.00%          27                 0   100.00%          36                 0   100.00%\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\nTOTAL                             300                 3    99.00%          21                 0   100.00%         240                 1    99.58%         196                 5    97.45%\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-cov",
+      "show",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/test_core",
+      "--instr-profile=/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/core.profdata",
+      "--format=html",
+      "--output-dir=/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/build/coverage/html",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_core.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_protocol.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_time.c",
+      "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_policy.c"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,57 @@
+ASAN_OPTIONS=abort_on_error=1:detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 /Applications/Xcode.app/Contents/Developer/usr/bin/make BUILD_DIR=build/sanitize CFLAGS='-std=c11 -Wall -Wextra -Werror -Wpedantic -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer' LDFLAGS='-fsanitize=address,undefined' test run
+clang -Iinclude -std=c11 -Wall -Wextra -Werror -Wpedantic -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer tests/test_ecu.c src/ecu.c -fsanitize=address,undefined -o build/sanitize/test_ecu
+clang -Iinclude -std=c11 -Wall -Wextra -Werror -Wpedantic -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer tests/test_core.c src/ecu_core.c src/ecu_protocol.c src/ecu_time.c src/ecu_policy.c -fsanitize=address,undefined -o build/sanitize/test_core
+clang -Iinclude -std=c11 -Wall -Wextra -Werror -Wpedantic -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer tests/test_transport.c src/ecu_transport.c -fsanitize=address,undefined -o build/sanitize/test_transport
+clang -Iinclude -std=c11 -Wall -Wextra -Werror -Wpedantic -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer tests/test_scenarios.c src/ecu_scenarios.c src/ecu_core.c src/ecu_protocol.c src/ecu_time.c src/ecu_policy.c -fsanitize=address,undefined -o build/sanitize/test_scenarios
+./build/sanitize/test_ecu
+All tests passed.
+./build/sanitize/test_core
+PASS: test_initial_missing_and_throttle_only
+PASS: test_age_499_500_501_and_refresh
+PASS: test_independent_timeout_config
+PASS: test_one_channel_stale
+PASS: test_invalid_config_disables_and_init_alias
+PASS: test_crc_reference_and_protocol_encoder_atomicity
+PASS: test_protocol_length_null_and_decode_output_preservation
+PASS: test_all_payload_single_bit_corruptions_preserve_measurement
+PASS: test_id_is_covered_by_crc
+PASS: test_range_boundaries_and_signed_temperature
+PASS: test_duplicate_old_and_half_range_counters
+PASS: test_counter_wrap_gap_independence_and_rejected_baseline
+PASS: test_received_timestamp_and_queue_age
+PASS: test_clock_rollback_is_latched_and_sensor_atomic
+PASS: test_uint64_boundaries_do_not_wrap
+PASS: test_active_recovery_history_clear_and_resync
+PASS: test_unknown_diagnostic_and_transport_dont_open_or_block_command
+PASS: test_null_api_uninitialized_and_latched_programming_error
+PASS: test_policy_thresholds_multiple_reasons_and_range
+PASS: test_saturating_statistics_and_result_names
+Core: 20 named test functions passed.
+./build/sanitize/test_transport
+PASS: test_partial_combined_and_crlf_lines
+PASS: test_strict_line_shape_and_atomic_output
+PASS: test_bounded_overflow_discard_and_recovery
+PASS: test_driver_error_discard_and_null_api
+Transport: 4 named test functions passed.
+./build/sanitize/test_scenarios
+PASS: deterministic same-seed trace
+PASS: fault-injection trace matches independent expected decisions
+PASS: NULL output rejected
+Scenarios: 3 named checks passed.
+clang -Iinclude -std=c11 -Wall -Wextra -Werror -Wpedantic -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer src/main.c src/ecu_scenarios.c src/ecu_core.c src/ecu_protocol.c src/ecu_time.c src/ecu_policy.c -fsanitize=address,undefined -o build/sanitize/ecu_sim
+./build/sanitize/ecu_sim
+time_ms,event,result,command_permille,active,history,coolant_received_ms,coolant_counter
+0,startup,accepted,0,7,7,0,0
+0,nominal,accepted,750,0,7,0,10
+499,age499,accepted,750,0,7,0,10
+500,age500,accepted,0,56,63,0,10
+510,refresh,accepted,750,0,63,510,11
+1010,coolant-drop,accepted,0,32,63,510,11
+1011,bitflip,crc,0,288,319,510,11
+1012,gap-recovery,accepted-gap,750,0,4415,1012,13
+1013,duplicate,duplicate,0,256,4415,1012,13
+1014,duplicate-recovery,accepted,750,0,4415,1014,14
+1020,range-with-valid-crc,range,0,128,4543,1014,14
+1021,range-recovery,accepted-gap,900,0,4543,1014,14
+1509,queued-delay,stale,0,72,4607,1014,14
+1508,clock-rollback,clock,0,584,5119,1014,14

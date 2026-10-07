@@ -1,0 +1,23 @@
+python3 tools/coverage.py --build-dir build/coverage --cc 'clang'
+{
+  "lines": {
+    "covered": 239,
+    "total": 240,
+    "percent": 99.58
+  },
+  "branches": {
+    "covered": 191,
+    "total": 196,
+    "percent": 97.45
+  },
+  "functions": {
+    "covered": 21,
+    "total": 21,
+    "percent": 100.0
+  },
+  "regions": {
+    "covered": 297,
+    "total": 300,
+    "percent": 99.0
+  }
+}

@@ -1,0 +1,12 @@
+PASS: nominal three-sensor command
+PASS: communication loss: all stale at age >=500ms
+PASS: nominal three-sensor command
+PASS: CRC rejection preserves value/counter/receive time
+PASS: valid frame recovers active fault, retains history
+PASS: duplicate rejection preserves measurement
+PASS: forward counter gap accepted as diagnostic
+PASS: valid-CRC range failure and recovery
+PASS: bounded line overflow discards through LF and recovers
+PASS: actual sequential 255-to-0 counter wrap
+PASS: nominal three-sensor command
+PASS: no telemetry drops during this exercise

@@ -1,0 +1,197 @@
+{
+  "data": [
+    {
+      "files": [
+        {
+          "filename": "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_core.c",
+          "summary": {
+            "branches": {
+              "count": 76,
+              "covered": 75,
+              "notcovered": 1,
+              "percent": 98.68421052631578
+            },
+            "functions": {
+              "count": 10,
+              "covered": 10,
+              "percent": 100
+            },
+            "instantiations": {
+              "count": 10,
+              "covered": 10,
+              "percent": 100
+            },
+            "lines": {
+              "count": 129,
+              "covered": 129,
+              "percent": 100
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 139,
+              "covered": 139,
+              "notcovered": 0,
+              "percent": 100
+            }
+          }
+        },
+        {
+          "filename": "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_policy.c",
+          "summary": {
+            "branches": {
+              "count": 36,
+              "covered": 36,
+              "notcovered": 0,
+              "percent": 100
+            },
+            "functions": {
+              "count": 1,
+              "covered": 1,
+              "percent": 100
+            },
+            "instantiations": {
+              "count": 1,
+              "covered": 1,
+              "percent": 100
+            },
+            "lines": {
+              "count": 27,
+              "covered": 27,
+              "percent": 100
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 42,
+              "covered": 42,
+              "notcovered": 0,
+              "percent": 100
+            }
+          }
+        },
+        {
+          "filename": "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_protocol.c",
+          "summary": {
+            "branches": {
+              "count": 74,
+              "covered": 70,
+              "notcovered": 4,
+              "percent": 94.5945945945946
+            },
+            "functions": {
+              "count": 8,
+              "covered": 8,
+              "percent": 100
+            },
+            "instantiations": {
+              "count": 8,
+              "covered": 8,
+              "percent": 100
+            },
+            "lines": {
+              "count": 78,
+              "covered": 77,
+              "percent": 98.71794871794873
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 111,
+              "covered": 108,
+              "notcovered": 3,
+              "percent": 97.2972972972973
+            }
+          }
+        },
+        {
+          "filename": "/private/tmp/embedded-upgrades-20261007/f1-ecu-simulator/src/ecu_time.c",
+          "summary": {
+            "branches": {
+              "count": 10,
+              "covered": 10,
+              "notcovered": 0,
+              "percent": 100
+            },
+            "functions": {
+              "count": 2,
+              "covered": 2,
+              "percent": 100
+            },
+            "instantiations": {
+              "count": 2,
+              "covered": 2,
+              "percent": 100
+            },
+            "lines": {
+              "count": 6,
+              "covered": 6,
+              "percent": 100
+            },
+            "mcdc": {
+              "count": 0,
+              "covered": 0,
+              "notcovered": 0,
+              "percent": 0
+            },
+            "regions": {
+              "count": 8,
+              "covered": 8,
+              "notcovered": 0,
+              "percent": 100
+            }
+          }
+        }
+      ],
+      "totals": {
+        "branches": {
+          "count": 196,
+          "covered": 191,
+          "notcovered": 5,
+          "percent": 97.44897959183673
+        },
+        "functions": {
+          "count": 21,
+          "covered": 21,
+          "percent": 100
+        },
+        "instantiations": {
+          "count": 21,
+          "covered": 21,
+          "percent": 100
+        },
+        "lines": {
+          "count": 240,
+          "covered": 239,
+          "percent": 99.58333333333333
+        },
+        "mcdc": {
+          "count": 0,
+          "covered": 0,
+          "notcovered": 0,
+          "percent": 0
+        },
+        "regions": {
+          "count": 300,
+          "covered": 297,
+          "notcovered": 3,
+          "percent": 99
+        }
+      }
+    }
+  ],
+  "type": "llvm.coverage.json.export",
+  "version": "3.0.1"
+}

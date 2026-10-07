@@ -1,0 +1,60 @@
+{
+  "measured_at_utc": "2026-10-07T17:38:02.059460+00:00",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "base_revision": "c5e52500c4fe4ad0448e64ebe734894f49aad732",
+  "commands": [
+    {
+      "command": [
+        "make",
+        "all",
+        "test",
+        "run"
+      ],
+      "exit_code": 0,
+      "log": "build/verification/1-run.log"
+    },
+    {
+      "command": [
+        "make",
+        "sanitize"
+      ],
+      "exit_code": 0,
+      "log": "build/verification/2-sanitize.log"
+    },
+    {
+      "command": [
+        "make",
+        "coverage"
+      ],
+      "exit_code": 0,
+      "log": "build/verification/3-coverage.log"
+    }
+  ],
+  "test_units": {
+    "legacy_named_functions": 16,
+    "core_named_functions": 20,
+    "transport_named_functions": 4,
+    "scenario_checks": 3
+  },
+  "sanitizer_limits": [
+    "ASan leak detection disabled on macOS; ASan/UBSan passing executions are not bug-freedom proof"
+  ],
+  "source_sha256": {
+    "src/ecu_protocol.c": "6b73e8171297dbf6d282cc1a060922f095ccc85e1b113892e2b8451380f52542",
+    "src/ecu_time.c": "c7b32ebb9c72653ad1ed4870b4637451e1142d185f4f3c35e07addcf1220809f",
+    "src/ecu_core.c": "a65e49759f5bfd6fafaf1a3b2cab955cb358009d7d3ddc9083e00fe2b2ffc2f0",
+    "src/ecu.c": "adf9d6fd98deb8f9ef795f7b0d37247854e37b821fc2344fbf8f342b4b76c250",
+    "src/main.c": "ec60dea72e6bc07ae03e6b3298797a4a58d76de1ab84376a3288439721f3977d",
+    "src/ecu_scenarios.c": "76ee1f5d12d1944fe79f8286cf60a645bfa78db4fa5f32292359f232502a617e",
+    "src/ecu_policy.c": "12c6abe30beb2ce6d4193449011d190545b7bbaee477d8d37715bcd5b35a7847",
+    "src/ecu_transport.c": "b36011334807655228df498903b4eb1cc1885c7401416d9b0f9a7bb2b863a361",
+    "include/ecu_scenarios.h": "27355e9b24b7b789f4b3fe2d840ca8e097256ef8c3c81a911147fb90bac3b1c7",
+    "include/ecu_transport.h": "8e60f0287b3c78f81dea8a6e13240f59a9b4bdc7f0ad19d5c97ffc1fcacf8e67",
+    "include/ecu_core.h": "4e524ff18ff7e866fd7df7e9d407d4dda81ccf3810681d2d6dec3476830fdc37",
+    "include/ecu.h": "6c2c15358874d8ad9b7e3319eeb4c38e09995ad7ea3ef834a6fb4fce019e6861",
+    "tests/test_scenarios.c": "43a6330758d7d84379186506b8b82d8de72b6761dd55369159244d589f922b71",
+    "tests/test_ecu.c": "ec4f5f4297b19d3555866660563aabda3590ac68eb010636dfc76870119b04c3",
+    "tests/test_transport.c": "5b8870e9273ac7cf9034332a6a890df3939b9acb6c7368311337fbd181d54198",
+    "tests/test_core.c": "97691efcd9c5e42556862afd62384e6628a3139d549b55110716f1d9fb0b6d70"
+  }
+}

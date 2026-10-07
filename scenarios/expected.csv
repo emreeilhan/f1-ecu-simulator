@@ -1,0 +1,15 @@
+time_ms,event,result,command_permille,active,history,coolant_received_ms,coolant_counter
+0,startup,accepted,0,7,7,0,0
+0,nominal,accepted,750,0,7,0,10
+499,age499,accepted,750,0,7,0,10
+500,age500,accepted,0,56,63,0,10
+510,refresh,accepted,750,0,63,510,11
+1010,coolant-drop,accepted,0,32,63,510,11
+1011,bitflip,crc,0,288,319,510,11
+1012,gap-recovery,accepted-gap,750,0,4415,1012,13
+1013,duplicate,duplicate,0,256,4415,1012,13
+1014,duplicate-recovery,accepted,750,0,4415,1014,14
+1020,range-with-valid-crc,range,0,128,4543,1014,14
+1021,range-recovery,accepted-gap,900,0,4543,1014,14
+1509,queued-delay,stale,0,72,4607,1014,14
+1508,clock-rollback,clock,0,584,5119,1014,14

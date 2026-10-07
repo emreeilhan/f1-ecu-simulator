@@ -1,0 +1,32 @@
+name: Host verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normal and sanitized regressions
+        run: |
+          make CC=${{ matrix.compiler }} all test run
+          make CC=${{ matrix.compiler }} sanitize
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install matched distribution tools
+        run: sudo apt-get update && sudo apt-get install -y clang llvm gcc lcov
+      - name: LLVM and GNU coverage
+        run: |
+          make CC=clang coverage
+          make coverage-gcc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: host-coverage
+          path: |
+            build/coverage/
+            build/gcov/
