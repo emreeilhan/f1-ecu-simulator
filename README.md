@@ -174,3 +174,10 @@ tools/         coverage and already-flashed UART exercise tools
 docs/          protocol, setup, verification and dated evidence
 build/         generated host binaries and measurement files (ignored)
 ```
+
+## Native Linux verification
+
+GCC/Clang normal and sanitizer checks, LLVM coverage and GNU/LCOV coverage
+passed in [run 37689053307](https://github.com/emreeilhan/f1-ecu-simulator/actions/runs/37689053307)
+for source `d1f6dfc`. The [verification record](docs/verification.md) distinguishes
+Linux tool denominators from the earlier macOS and physical UART measurements.

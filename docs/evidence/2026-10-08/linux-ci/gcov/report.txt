@@ -1,0 +1,29 @@
+File '/home/runner/work/f1-ecu-simulator/f1-ecu-simulator/src/ecu_core.c'
+Lines executed:100.00% of 113
+Branches executed:100.00% of 74
+Taken at least once:98.65% of 74
+Calls executed:100.00% of 28
+Creating 'ecu_core.c.gcov'
+
+File '/home/runner/work/f1-ecu-simulator/f1-ecu-simulator/src/ecu_protocol.c'
+Lines executed:98.31% of 59
+Branches executed:100.00% of 66
+Taken at least once:93.94% of 66
+Calls executed:100.00% of 7
+Creating 'ecu_protocol.c.gcov'
+
+File '/home/runner/work/f1-ecu-simulator/f1-ecu-simulator/src/ecu_time.c'
+Lines executed:100.00% of 4
+Branches executed:100.00% of 10
+Taken at least once:100.00% of 10
+No calls
+Creating 'ecu_time.c.gcov'
+
+File '/home/runner/work/f1-ecu-simulator/f1-ecu-simulator/src/ecu_policy.c'
+Lines executed:100.00% of 25
+Branches executed:100.00% of 36
+Taken at least once:100.00% of 36
+No calls
+Creating 'ecu_policy.c.gcov'
+
+Lines executed:99.50% of 201

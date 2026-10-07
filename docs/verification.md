@@ -94,3 +94,16 @@ preservation, active recovery with history, forward gap, valid-CRC range failure
 line overflow recovery and sequential counter wrap. `tx_dropped` remained zero.
 Physical FIFO arrival, CAN traffic, real sensors and worst-case timing were not
 measured. Coverage and a passing exercise do not establish bug freedom or safety.
+
+## Native Linux follow-up — 8 October
+
+[Run 37689053307](https://github.com/emreeilhan/f1-ecu-simulator/actions/runs/37689053307)
+passed for `d1f6dfcd27c41c0bf063932c24817f0bc670fed7`: GCC/Clang normal and
+ASan/UBSan checks plus LLVM and GNU/LCOV coverage. Linux Clang18 maps the same
+four core modules to 246/247 lines (99.60%) and 191/196 branch outcomes (97.45%).
+GNU gcov reports 200/201 source lines (99.50%); tool denominators differ and are
+not interchangeable. [Raw records](evidence/2026-10-08/linux-ci/) retain both.
+
+The Linux build exposed missing final newlines in the two legacy C files. Adding
+them changed no core or ESP32 source. Earlier native macOS manifests retain the
+bytes measured at that time; current core/hardware source hashes still match.
